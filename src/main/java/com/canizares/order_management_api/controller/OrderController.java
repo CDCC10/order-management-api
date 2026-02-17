@@ -1,7 +1,7 @@
 package com.canizares.order_management_api.controller;
 
 import com.canizares.order_management_api.model.Order;
-import com.canizares.order_management_api.repository.IOrderRepository;
+import com.canizares.order_management_api.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +13,20 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class OrderController {
     @Autowired
-    private IOrderRepository orderRepository;
+    private OrderService orderService;
 
+    @GetMapping("/{id}")
+    public Order findById(@PathVariable("id") long id) {
+        return orderService.findById(id);
+    }
     @GetMapping
     public List<Order> getOrders() {
-        return orderRepository.findAll();
+        return orderService.findAll();
     }
 
     @PostMapping
     public Order createOrder(@Valid @RequestBody Order order) {
         System.out.println();
-        return orderRepository.save(order);
+        return orderService.save(order);
     }
 }
