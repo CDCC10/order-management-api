@@ -22,6 +22,7 @@ public class Order {
     private Double totalAmount;
     private String status;
     private LocalDateTime createdAt;
+    private Boolean active;
 
     @PrePersist
     protected void onCreate() {
