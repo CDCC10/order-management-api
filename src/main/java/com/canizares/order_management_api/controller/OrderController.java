@@ -1,9 +1,12 @@
 package com.canizares.order_management_api.controller;
 
 import com.canizares.order_management_api.model.Order;
+import com.canizares.order_management_api.model.dto.OrderRequestDTO;
+import com.canizares.order_management_api.model.dto.OrderResponseDTO;
 import com.canizares.order_management_api.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +21,9 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/{id}")
-    public Order findById(@PathVariable("id") long id) {
-        return orderService.findById(id);
+    public ResponseEntity<OrderResponseDTO> findById(@PathVariable("id") long id) {
+        OrderResponseDTO response = orderService.findById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping
     public List<Order> getOrders() {
@@ -27,9 +31,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder(@Valid @RequestBody Order order) {
-        System.out.println();
-        return orderService.save(order);
+    public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO orderDTO) {
+        OrderResponseDTO response = orderService.save(orderDTO);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/status")
